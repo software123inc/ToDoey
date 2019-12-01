@@ -10,14 +10,42 @@ import UIKit
 
 class ToDoListViewController: UITableViewController {
     
-    let itemArray = ["Find Mike", "Buy Eggs", "Destroy Demogorgon"]
+    var itemArray = ["Find Mike", "Buy Eggs", "Destroy Demogorgon"]
+    
+    //MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
-
-
+    
+    //MARK: - Add New Items
+    
+    @IBAction func addButtonTapped(_ sender: UIBarButtonItem) {
+        var alertTextField = UITextField()
+        
+        let alert = UIAlertController(title:
+            "Add New Item", message: nil, preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
+            print(alertTextField.text ?? "Did not enter text")
+            
+            if let newText = alertTextField.text, !newText.isEmpty {
+                self.itemArray.append(newText)
+                self.tableView.reloadData()
+            }
+        }
+        
+        alert.addAction(action)
+        
+        alert.addTextField { (inTextField) in
+            inTextField.placeholder = "Enter new item"
+            alertTextField = inTextField
+        }
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
 }
 
 //MARK: - UITableViewDataSource
@@ -49,3 +77,5 @@ extension ToDoListViewController {
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
+
+
