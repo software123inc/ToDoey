@@ -10,13 +10,18 @@ import UIKit
 
 class ToDoListViewController: UITableViewController {
     
-    var itemArray = ["Find Mike", "Buy Eggs", "Destroy Demogorgon"]
+    var itemArray = [String]()
+    let defaults = UserDefaults.standard
     
     //MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        if let todoListArray = defaults.array(forKey: "TodoListArray") as? [String] {
+            itemArray = todoListArray
+        }
     }
     
     //MARK: - Add New Items
@@ -32,6 +37,7 @@ class ToDoListViewController: UITableViewController {
             
             if let newText = alertTextField.text, !newText.isEmpty {
                 self.itemArray.append(newText)
+                self.defaults.set(self.itemArray, forKey: "TodoListArray")
                 self.tableView.reloadData()
             }
         }
